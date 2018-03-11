@@ -83,10 +83,18 @@ public class StreamingApp implements CommListener{
         oWrite.setRequired(false);
         options.addOption(oWrite);
 
-        Option oPing = new Option("p", "ping", true, "ping the sever");
-        oPing.setRequired(false);
-        options.addOption(oPing);
+        //Option oPing = new Option("p", "ping", true, "ping the sever");
+        //oPing.setRequired(false);
+        //options.addOption(oPing);
 
+        Option oHost = new Option("h", "host", true, "server host");
+        oHost.setRequired(true);
+        options.addOption(oHost);
+        
+        Option oPort = new Option("p", "port", true, "server port");
+        oPort.setRequired(true);
+        options.addOption(oPort);
+        
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine cmd;
@@ -104,14 +112,17 @@ public class StreamingApp implements CommListener{
         
         // Main stuff
 		try {
+			host = cmd.getOptionValue("h");
+			port = Integer.parseInt(cmd.getOptionValue("p"));
+			
 			MessageClient mc = new MessageClient(host, port);
 			StreamingApp da = new StreamingApp(mc);
-
+			
 			// do stuff w/ the connection
-			if (cmd.hasOption("p")) {
-				System.out.println("Pinginr the server");
-				da.ping(4000);
-			}
+			//if (cmd.hasOption("p")) {
+			//	System.out.println("Pinginr the server");
+			//	da.ping(4000);
+			//}
 			if (cmd.hasOption("w")) {
 				String filePath = cmd.getOptionValue("w");
 				da.testtSend(filePath);
